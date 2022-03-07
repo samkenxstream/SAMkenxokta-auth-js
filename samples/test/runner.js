@@ -15,6 +15,7 @@
 
 require('@okta/env').setEnvironmentVarsFromTestEnv(__dirname);
 
+
 const spawn = require('cross-spawn-with-kill');
 const waitOn = require('wait-on');
 const config = require('../config');
