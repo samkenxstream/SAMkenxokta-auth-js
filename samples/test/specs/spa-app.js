@@ -41,7 +41,7 @@ function loginDirect(options) {
 
 describe('spa-app: ' + sampleConfig.name, () => {
 
-  it('can login using redirect', async () => {
+  fit('can login using redirect', async () => {
     await startApp('/', { authMethod: 'redirect', requireUserSession: true });
     await loginRedirect();
     await checkProfile();
@@ -50,7 +50,7 @@ describe('spa-app: ' + sampleConfig.name, () => {
 
   // TODO: fix this flaky test OKTA-464122
   // eslint-disable-next-line jasmine/no-disabled-tests
-  xit('can use memory token storage', async () => {
+  it('can use memory token storage', async () => {
     await startApp('/', { authMethod: 'redirect', requireUserSession: true, storage: 'memory' });
     await loginRedirect();
     await checkProfile();
