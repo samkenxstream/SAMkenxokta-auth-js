@@ -12,7 +12,7 @@
 #   exit ${TEST_FAILURE}
 # fi
 
-export SAMPLE_NAME=webpack-spa
+# export SAMPLE_NAME=webpack-spa
 if ! yarn test:specs; then
   echo "Specs tests failed! Exiting..."
   exit ${TEST_FAILURE}

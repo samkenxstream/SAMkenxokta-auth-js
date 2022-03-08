@@ -95,22 +95,23 @@ if (testName) {
 } else {
   // Run all tests
   tasks = [];
-  config.getSampleNames()
-  .filter(sampleName => {
-    const sampleConfig = config.getSampleConfig(sampleName);
-    if (process.env.RUN_CUCUMBER_TESTS) {
-      const features = sampleConfig.features || [];
-      if (!features.length) {
-        return false;
-      }
-    } else {
-      const specs = sampleConfig.specs || [];
-      if (!specs.length) {
-        return false;
-      }
-    }
-    return true;
-  })
+  // config.getSampleNames()
+  // .filter(sampleName => {
+  //   const sampleConfig = config.getSampleConfig(sampleName);
+  //   if (process.env.RUN_CUCUMBER_TESTS) {
+  //     const features = sampleConfig.features || [];
+  //     if (!features.length) {
+  //       return false;
+  //     }
+  //   } else {
+  //     const specs = sampleConfig.specs || [];
+  //     if (!specs.length) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // })
+  ['static-spa', 'webpack-spa']
   .map(sampleName => {
     const task = () => {
       return new Promise((resolve) => {
