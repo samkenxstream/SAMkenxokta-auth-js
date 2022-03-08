@@ -17,3 +17,6 @@ if ! yarn test:specs; then
   echo "Specs tests failed! Exiting..."
   exit ${TEST_FAILURE}
 fi
+
+echo '##### FALSE FAILURE, NEEDED TO RERUN IN BACON #####'
+exit 1
