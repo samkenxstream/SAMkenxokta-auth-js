@@ -50,14 +50,14 @@ describe('spa-app: ' + sampleConfig.name, () => {
 
   // TODO: fix this flaky test OKTA-464122
   // eslint-disable-next-line jasmine/no-disabled-tests
-  it('can use memory token storage', async () => {
+  fit('can use memory token storage', async () => {
     await startApp('/', { authMethod: 'redirect', requireUserSession: true, storage: 'memory' });
     await loginRedirect();
     await checkProfile();
     await logoutRedirect();
   });
 
-  it('can get user info', async () => {
+  fit('can get user info', async () => {
     await startApp('/', { authMethod: 'redirect', requireUserSession: false });
     await loginRedirect();
     await checkNoProfile();

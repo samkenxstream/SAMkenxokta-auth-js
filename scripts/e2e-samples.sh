@@ -61,8 +61,6 @@ sed -i "s|REPLACE_CUSTOM_CLIENT_SECRET|"$CUSTOM_CLIENT_SECRET"|g"  $OKTA_HOME/$R
 sed -i "s|REPLACE_TOTP_CLIENT_ID|"$TOTP_CLIENT_ID"|g"              $OKTA_HOME/$REPO/testenv.yml 
 sed -i "s|REPLACE_TOTP_CLIENT_SECRET|"$TOTP_CLIENT_SECRET"|g"      $OKTA_HOME/$REPO/testenv.yml 
 
-cat $OKTA_HOME/$REPO/testenv.yml
-
 # Run the tests
 if ! yarn test:samples; then
   echo "tests failed! Exiting..."
