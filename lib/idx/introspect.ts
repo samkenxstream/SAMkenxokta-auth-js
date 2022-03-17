@@ -10,11 +10,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import idx from './idx-js';
+import { makeIdxState, validateVersionConfig } from './idxState';
 import { OktaAuthInterface } from '../types';
 import { IdxResponse, isRawIdxResponse } from './types/idx-js';
 import { getOAuthDomain } from '../oidc';
 import { IDX_API_VERSION } from '../constants';
+import { httpRequest } from '../http';
 
 export interface IntrospectOptions {
   withCredentials?: boolean;
@@ -34,8 +35,22 @@ export async function introspect (
   if (!rawIdxResponse) {
     const version = options.version || IDX_API_VERSION;
     const domain = getOAuthDomain(authClient);
+    const { withCredentials, interactionHandle, stateHandle } = options;
     try {
-      rawIdxResponse = await idx.introspect({ domain, ...options, version });
+      validateVersionConfig(version);
+      const url = `${domain}/idp/idx/introspect`;
+      const body = stateHandle ? { stateToken: stateHandle } : { interactionHandle };
+      const headers = {
+        'content-type': `application/ion+json; okta-version=${version}`, // Server wants this version info
+        accept: `application/ion+json; okta-version=${version}`,
+      };
+      rawIdxResponse = await httpRequest(authClient, {
+        method: 'POST',
+        url,
+        headers,
+        withCredentials,
+        args: body
+      });
     } catch (err) {
       if (isRawIdxResponse(err)) {
         rawIdxResponse = err;
@@ -46,5 +61,5 @@ export async function introspect (
   }
 
   const { withCredentials } = options;
-  return idx.makeIdxState(rawIdxResponse, { withCredentials });
+  return makeIdxState(authClient, rawIdxResponse!, { withCredentials });
 }
