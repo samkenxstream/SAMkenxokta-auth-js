@@ -106,9 +106,9 @@ export async function interact (
   // https://oktawiki.atlassian.net/wiki/spaces/eng/pages/2445902453/Support+Device+Binding+in+interact#Scenario-1%3A-Non-User-Agent-with-Confidential-Client-(top-priority)
     params.client_secret = clientSecret;
   }
-  const body = Object.entries(params)
-    .map( ([param, value]) => `${param}=${encodeURIComponent(value)}` )
-    .join('&');
+  // const body = Object.entries(params)
+  //   .map( ([param, value]) => `${param}=${encodeURIComponent(value)}` )
+  //   .join('&');
   const headers = {
     'content-type': 'application/x-www-form-urlencoded',
   };
@@ -118,7 +118,7 @@ export async function interact (
     url,
     headers,
     withCredentials,
-    args: body
+    args: params
   });
   const interactionHandle = resp.interaction_handle;
 

@@ -54,10 +54,18 @@ function fetchRequest(method: string, url: string, args: FetchOptions) {
   var headers = args.headers || {};
   var contentType = (headers['Content-Type'] || headers['content-type'] || '');
 
-  // JSON encode body (if appropriate)
-  if (contentType === 'application/json' && body && typeof body !== 'string') {
-    body = JSON.stringify(body);
+  if (body && typeof body !== 'string') {
+    // JSON encode body (if appropriate)
+    if (contentType === 'application/json') {
+      body = JSON.stringify(body);
+    }
+    else if (contentType === 'application/x-www-form-urlencoded') {
+      body = Object.entries(body)
+      .map( ([param, value]) => `${param}=${encodeURIComponent(value)}` )
+      .join('&');
+    }
   }
+
   var fetch = global.fetch || crossFetch;
   var fetchPromise = fetch(url, {
     method: method,
