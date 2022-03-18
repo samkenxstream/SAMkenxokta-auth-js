@@ -4,7 +4,7 @@ import { IDX_API_VERSION } from '../../constants';
 import v1 from './v1/parsers';
 
 
-const parsersForVersion = function parsersForVersion( version ) {
+export const parsersForVersion = function parsersForVersion( version ) {
   switch (version) {
     case '1.0.0':
       return v1;

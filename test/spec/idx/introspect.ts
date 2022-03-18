@@ -38,8 +38,6 @@ const mocked = {
   oidc: require('../../../lib/oidc')
 };
 
-import { OktaAuth } from '@okta/okta-auth-js';
-
 describe('idx/introspect', () => {
   let testContext;
   beforeEach(() => {

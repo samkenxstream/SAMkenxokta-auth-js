@@ -16,6 +16,7 @@ import { httpRequest } from '../../../http';
 import { OktaAuthInterface } from '../../../types';    // auth-js/types
 import { divideActionParamsByMutability } from './actionParser';
 import { makeIdxState } from './makeIdxState';
+import AuthApiError from '../../../errors/AuthApiError';
 
 const generateDirectFetch = function generateDirectFetch(authClient: OktaAuthInterface, { 
   actionDefinition, 
@@ -35,23 +36,36 @@ const generateDirectFetch = function generateDirectFetch(authClient: OktaAuthInt
       ...immutableParamsForAction
     });
 
-    const response = await httpRequest(authClient, {
-      url: target,
-      method: actionDefinition.method,
-      headers,
-      args: body,
-      withCredentials: toPersist?.withCredentials ?? false
-    });
+    try {
+      const response = await httpRequest(authClient, {
+        url: target,
+        method: actionDefinition.method,
+        headers,
+        args: body,
+        withCredentials: toPersist?.withCredentials ?? true
+      });
 
-    const idxResponse = makeIdxState(authClient, { ...response }, toPersist);
-    if (response.status === 401 && response.headers.get('WWW-Authenticate') === 'Oktadevicejwt realm="Okta Device"') {
-      // Okta server responds 401 status code with WWW-Authenticate header and new remediation
-      // so that the iOS/MacOS credential SSO extension (Okta Verify) can intercept
-      // the response reaches here when Okta Verify is not installed
-      // set `stepUp` to true if flow should be continued without showing any errors
-      idxResponse.stepUp = true;
+      return makeIdxState(authClient, { ...response }, toPersist);
     }
-    return idxResponse;
+    catch (err) {
+      if (!(err instanceof AuthApiError) || !err?.xhr) {
+        throw err;
+      }
+
+      const response = err.xhr;
+      const payload = response.responseJSON || JSON.parse(response.responseText);
+      const wwwAuthHeader = response.headers['WWW-Authenticate'] || response.headers['www-authenticate'];
+
+      const idxResponse = makeIdxState(authClient, { ...payload }, toPersist);
+      if (response.status === 401 && wwwAuthHeader === 'Oktadevicejwt realm="Okta Device"') {
+        // Okta server responds 401 status code with WWW-Authenticate header and new remediation
+        // so that the iOS/MacOS credential SSO extension (Okta Verify) can intercept
+        // the response reaches here when Okta Verify is not installed
+        // set `stepUp` to true if flow should be continued without showing any errors
+        idxResponse.stepUp = true;
+      }
+      return idxResponse;
+    }
   };
 };
 
