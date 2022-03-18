@@ -9,7 +9,7 @@
   - IDX functions will accept the "canonical" name for inputs (as defined by server response). For example a `credentials` object can be passed to satisfy an "identify" remediation instead of `username` and `password`
   - `idx.proceed` will continue without saved transaction meta if a `stateHandle` is available
   - Unknown remediations/values will proceed if the proper data is supplied by the caller
-  - IDX response object has a new field `requestDidSucceed` which will be false if the XHR was returned with a non-200 HTTP status
+  - IDX response object has a new field `requestDidSucceed` which will be false if the XHR was returned with a non-2xx HTTP status
 
 ### Fixes
 
