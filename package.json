@@ -2,12 +2,13 @@
   "private": true,
   "name": "@okta/okta-auth-js",
   "description": "The Okta Auth SDK",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "homepage": "https://github.com/okta/okta-auth-js",
   "license": "Apache-2.0",
   "main": "build/cjs/exports/default.js",
   "module": "build/esm/node/exports/exports/default.js",
   "browser": "build/umd/default.js",
+  "react-native": "build/esm/browser/exports/exports/default.js",
   "types": "build/types/lib/exports/default.d.ts",
   "exports": {
     ".": {
